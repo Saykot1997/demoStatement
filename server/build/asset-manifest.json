@@ -1,0 +1,28 @@
+{
+  "files": {
+    "main.css": "/static/css/main.8ef65853.css",
+    "main.js": "/static/js/main.4427bd94.js",
+    "static/media/islami_bank_footer.png": "/static/media/islami_bank_footer.2e477214a946d35e88b9.png",
+    "static/media/signature1.png": "/static/media/signature1.e403737b9a0440f77367.png",
+    "static/media/signature2.png": "/static/media/signature2.ec04561144c9416b1ae3.png",
+    "static/media/islami_bank_signature.png": "/static/media/islami_bank_signature.d1a8e7a45a9b0b23753a.png",
+    "static/media/mid_logo.png": "/static/media/mid_logo.56687bfc14cf289c138f.png",
+    "static/media/sil.png": "/static/media/sil.4eff3474223a923c501c.png",
+    "static/media/logo.jpg": "/static/media/logo.3f08bf331841e452054b.jpg",
+    "static/media/sig 2.png": "/static/media/sig 2.d4acc69a71dcc0b1490e.png",
+    "static/media/islami_bank_sil.png": "/static/media/islami_bank_sil.e4019a8f3d378a954002.png",
+    "static/media/islami_bank_logo.png": "/static/media/islami_bank_logo.48318346f60bef270eab.png",
+    "static/media/logo.png": "/static/media/logo.4a8bd0f74a5d18ad0c1d.png",
+    "static/media/islami_bank_water_mark.png": "/static/media/islami_bank_water_mark.128695360681074190c3.png",
+    "static/media/sif 1.png": "/static/media/sif 1.72fcf7693bb1d03ed719.png",
+    "static/media/water_mark.png": "/static/media/water_mark.65b783f1086a53ba6de4.png",
+    "static/media/islami_bank_signature_2.png": "/static/media/islami_bank_signature_2.05265d7b0858408ce1ae.png",
+    "index.html": "/index.html",
+    "main.8ef65853.css.map": "/static/css/main.8ef65853.css.map",
+    "main.4427bd94.js.map": "/static/js/main.4427bd94.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.8ef65853.css",
+    "static/js/main.4427bd94.js"
+  ]
+}
