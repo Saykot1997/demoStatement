@@ -154,8 +154,8 @@ function UCBBankStatement() {
                     <tr className=' w-full'>
                         <th class="report-header-cell w-full" colSpan={8}>
                             <div className=' w-full grid grid-cols-4'>
-                                <div className=' flex justify-end'>
-                                    <img src={logo} alt="" className=' w-28 h-20 -translate-y-1' />
+                                <div className=' flex'>
+                                    <img src={logo} alt="" className='w-36 -translate-y-3' />
                                 </div>
                                 <div className=' col-span-2 leading-5 font-medium'>
                                     <p className=''>United Commercial Bank Limited.</p>
@@ -423,9 +423,9 @@ function UCBBankStatement() {
                     </tr>
                     <tr className=' bg-gray-200'>
                         <th className=' font-semibold px-2 print:text-[12px] border-l border-t border-gray-600 w-[12%]'>Trans. Date</th>
-                        <th className=' font-semibold px-2 print:text-[12px] border-l border-t border-gray-600'>Cheque#</th>
+                        <th className=' font-semibold px-2 print:text-[12px] border-l border-t border-gray-600'>Cheque#.</th>
                         <th className=' font-semibold px-2 print:text-[12px] border-l border-t border-gray-600 w-[18%] text-left'>Ref.</th>
-                        <th className=' font-semibold px-2 print:text-[12px] border-l border-t border-gray-600 w-[16%] text-left'>Naration</th>
+                        <th className=' font-semibold px-2 print:text-[12px] border-l border-t border-gray-600 w-[16%] text-left'>Narration</th>
                         <th className=' font-semibold px-2 print:text-[12px] border-l border-t border-gray-600 w-[14%] text-left'>Trans. Details</th>
                         <th className=' font-semibold px-2 print:text-[12px] border-l border-t border-gray-600 text-right w-[12%]'>Debit</th>
                         <th className=' font-semibold px-2 print:text-[12px] border-l border-t border-gray-600 text-right w-[12%]'>Credit</th>

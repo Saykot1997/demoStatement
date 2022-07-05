@@ -202,7 +202,6 @@ const GenerateRandomTranjections = (startStatementDate, endStatementDate, transa
                 randomDeposit = 0.00;
             }
 
-
             // create randomTransictions object
             let randomTransictionsObject = {
                 particular: randomParticular,
@@ -213,7 +212,6 @@ const GenerateRandomTranjections = (startStatementDate, endStatementDate, transa
                 deposit: randomDeposit,
                 type: transactions[findRandomParticular].transactionType,
                 method: transactions[findRandomParticular].transactionMethod,
-
             }
 
             if (transactions[findRandomParticular].ref) {
@@ -258,7 +256,6 @@ const GenerateRandomTranjections = (startStatementDate, endStatementDate, transa
                 }
             } else {
 
-
                 interTotalWithdrawal = (parseFloat(interTotalWithdrawal) + parseFloat(randomWithdrawal)).toFixed(2)
 
                 if (i === 0) {
@@ -271,8 +268,61 @@ const GenerateRandomTranjections = (startStatementDate, endStatementDate, transa
                 }
             }
 
-            randomTransictions.push(randomTransictionsObject);
 
+            if (transactions[findRandomParticular].dependent) {
+
+                const dependentData = {
+                    ...randomTransictionsObject
+                }
+
+                dependentData.ref = transactions[findRandomParticular].dependentData.ref
+                dependentData.particular = transactions[findRandomParticular].dependentData.transactionName
+                dependentData.type = transactions[findRandomParticular].dependentData.transactionTyp
+
+
+                // set deposit and withdrawl
+                if (transactions[findRandomParticular].dependentData.transactionType === "credit") {
+
+                    dependentData.withdrawal = 0.00;
+                    dependentData.deposit = parseFloat(transactions[findRandomParticular].dependentData.amount).toFixed(2)
+
+                } else {
+
+                    dependentData.withdrawal = parseFloat(transactions[findRandomParticular].dependentData.amount).toFixed(2);
+                    dependentData.deposit = 0.00;
+                }
+
+
+                if (transactions[findRandomParticular].dependentData.transactionType === "credit") {
+
+                    interTotalDeposit = (parseFloat(interTotalDeposit) + parseFloat(randomDeposit)).toFixed(2)
+
+                    if (i === 0) {
+
+                        dependentData.balance = (parseFloat(initialBalance) + parseFloat(randomDeposit)).toFixed(2);
+
+                    } else {
+
+                        dependentData.balance = (parseFloat(randomTransictionsObject.balance) + parseFloat(randomDeposit)).toFixed(2);
+                    }
+                } else {
+
+                    interTotalWithdrawal = (parseFloat(interTotalWithdrawal) + parseFloat(randomWithdrawal)).toFixed(2)
+
+                    if (i === 0) {
+
+                        dependentData.balance = (parseFloat(initialBalance) - parseFloat(randomWithdrawal)).toFixed(2);
+
+                    } else {
+
+                        dependentData.balance = (parseFloat(randomTransictionsObject.balance) - parseFloat(randomWithdrawal)).toFixed(2);
+                    }
+                }
+
+                console.log(dependentData);
+            }
+
+            randomTransictions.push(randomTransictionsObject);
         }
     }
 

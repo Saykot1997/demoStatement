@@ -497,7 +497,7 @@ function IslamiBankStatement() {
                         <td class=" " colspan="7">
                             <div className=' w-full text-sm text-center mt-5'>
                                 <p className=' font-semibold'>101 : Cash Credit , 102 : Transfer Credit, 103 : Clearing Credit, 201 : Cash Debit, 202 : Cash Debit, 203: Clearing Debit</p>
-                                <p className=' font-semibold text-[12px]'>**We receive Dhaka WASA, DESCO, BRTA, Student tution and e-GP/e-Tendering bills/frees at our branches through online.</p>
+                                <p className=' font-semibold text-[12px]'>**We receive Dhaka WASA, DESCO, BRTA, Student tuition and e-GP/e-Tendering bills/fees at our branches through online.</p>
                                 <p className=' text-[12px]'>Prepared by ABABIL.Developed by : Millennium Information Solution Limited</p>
                                 <div className=' flex justify-end'>
                                     <img src={bankSil} alt="" className=' w-32 -translate-y-20' />

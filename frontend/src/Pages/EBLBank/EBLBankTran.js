@@ -125,12 +125,15 @@ function EBLBankTran() {
     const changeDependent = (value, transaction) => {
 
         setCurrentTransectionDepent(value)
-        setCurrentTransectionDepentData({
-            transactionName: transaction.dependentData.transactionName,
-            transactionType: transaction.dependentData.transactionType,
-            amount: transaction.dependentData.amount,
-            ref: transaction.dependentData.ref,
-        })
+
+        const data = {
+            transactionName: "",
+            transactionType: "",
+            amount: "",
+            ref: "",
+        }
+
+        setCurrentTransectionDepentData(data)
     }
 
     const confirmDelete = async (transactionId) => {

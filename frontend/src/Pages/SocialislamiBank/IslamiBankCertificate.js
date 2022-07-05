@@ -21,7 +21,7 @@ function IslamiBankCertificate() {
     const [accountHolderMotherName, setAccountHolderMotherName] = useState("Masudda Begum")
     const [accountHolderAddress, setAccountHolderAddress] = useState("Kabir Mistrir Bari, JamidurPara, Word No-04, West Kalauzan, Kalauzan-4396, Lohagora, Chattogram")
     const [accountNumber, setAccountNumber] = useState("0123456789")
-    const [accountType, setAccountType] = useState("Sanchita Special deposit Scheme")
+    const [accountType, setAccountType] = useState("Sanchita Special Deposit Scheme")
     const [accountBalance, setAccountBalance] = useState("1000")
     const [usdCurrancyConversionRate, setUsdCurrancyConversionRate] = useState("87.60")
     const [accountOpeningDate, setAccountOpeningDate] = useState("04/08/2004")
@@ -116,19 +116,19 @@ function IslamiBankCertificate() {
                     <span className=' border-b border-gray-800 font-semibold'>TO WHOM IT MAY CONCERN</span>
                 </div>
                 <div>
-                    <p>This is to certify that
+                    <p>This is to certify that Mr.
                         {
                             editMode ?
                                 <input type="text" placeholder='Account Holder Name' value={accountHolderName} onChange={(e) => setAccountHolderName(e.target.value)} className=' rounded p-1 my-[2px] border border-blue-500 focus:outline-none' />
                                 :
-                                <span className=''> {accountHolderName} </span>
+                                <span className=' font-semibold'> {accountHolderName}, </span>
                         }
-                        S/o
+                        S/O
                         {
                             editMode ?
                                 <input type="text" placeholder='Father Name' value={accountHolderFotherName} onChange={(e) => setAccountHolderFotherName(e.target.value)} className=' rounded p-1 my-[2px] border border-blue-500 focus:outline-none' />
                                 :
-                                <span className=''>{accountHolderFotherName} </span>
+                                <span className=''> {accountHolderFotherName} </span>
                         }
 
                         &
@@ -146,7 +146,7 @@ function IslamiBankCertificate() {
                                 :
                                 <span className=' mx-1'>{accountHolderAddress} </span>
                         }
-                        have been maintaing a
+                        has been maintaining a
 
                         {
                             editMode ?
@@ -154,7 +154,7 @@ function IslamiBankCertificate() {
                                 :
                                 <span className=''> {accountType} </span>
                         }
-                        Account brearing No.
+                        Account bearing No.
                         {
                             editMode ?
                                 <input type="text" placeholder='Account Number' value={accountNumber} onChange={(e) => setAccountNumber(e.target.value)} className=' rounded p-1 my-[2px] border border-blue-500 focus:outline-none' />
