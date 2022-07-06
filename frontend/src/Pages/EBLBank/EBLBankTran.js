@@ -80,16 +80,15 @@ function EBLBankTran() {
             bankName: path,
             amount: currentTransectionAmount,
             limit: currentTransectionLimit,
-            dependentData: currentTransectionDepentData
         }
 
         if (currentTransectionDepent === "true") {
             data.dependent = true
+            data.dependentData = currentTransectionDepentData
         } else {
             data.dependent = false
+            data.dependentData = {}
         }
-
-        console.log(data)
 
         try {
 
@@ -98,7 +97,7 @@ function EBLBankTran() {
                     Authorization: `Bearer ${User}`
                 }
             })
-            console.log(response.data)
+
             dispatch(transactionUpdateSuccess(response.data));
             toast.success('Transaction updated successfully')
             setUpdateModeOpen(false)
