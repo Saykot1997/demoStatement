@@ -48,7 +48,7 @@ function EBLBankTran() {
         setCurrentTransectionAmount(transaction.amount)
         setCurrentTransectionLimit(transaction.limit)
         setCurrentTransectionDepent(transaction.dependent)
-        setCurrentTransectionDepentData(transaction.dependantData)
+        setCurrentTransectionDepentData(transaction.dependentData)
 
     }
 
@@ -122,17 +122,16 @@ function EBLBankTran() {
 
 
     const changeDependent = (value, transaction) => {
-
         setCurrentTransectionDepent(value)
-
-        const data = {
-            transactionName: "",
-            transactionType: "",
-            amount: "",
-            ref: "",
+        if (!transaction.dependentData) {
+            const data = {
+                transactionName: "",
+                transactionType: "",
+                amount: "",
+                ref: "",
+            }
+            setCurrentTransectionDepentData(data)
         }
-
-        setCurrentTransectionDepentData(data)
     }
 
     const confirmDelete = async (transactionId) => {
@@ -198,22 +197,22 @@ function EBLBankTran() {
                                 {
                                     updateModeOpen && currentTransactionId === transaction._id ?
                                         <div>
-                                            <div>
+                                            <div className='mt-2'>
                                                 <label htmlFor="">Descriptions</label>
-                                                <input type="text" placeholder='Descriptions' value={currentTransectionName} onChange={(e) => setCurrentTransectionName(e.target.value)} className='mt-5 border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                                                <input type="text" placeholder='Descriptions' value={currentTransectionName} onChange={(e) => setCurrentTransectionName(e.target.value)} className='border border-blue-500 rounded p-1 focus:outline-none w-full' />
                                             </div>
 
-                                            <div>
+                                            <div className='mt-2'>
                                                 <label htmlFor="">Transaction Type</label>
-                                                <select value={currentTransactionType} onChange={(e) => setCurrentTransactionType(e.target.value)} name="" id="" className=' border border-blue-500 p-1 rounded focus:outline-none mt-4 mb-2'>
+                                                <select value={currentTransactionType} onChange={(e) => setCurrentTransactionType(e.target.value)} name="" id="" className=' border border-blue-500 p-1 rounded focus:outline-none'>
                                                     <option value="">Select Transection Type</option>
                                                     <option value="credit">Credit</option>
                                                     <option value="debit">Debit</option>
                                                 </select>
                                             </div>
-                                            <div>
+                                            <div className='mt-2'>
                                                 <label htmlFor="">Transaction Mathod</label>
-                                                <select name="" id="" value={currentTransactionMethod} onChange={(e) => setCurrentTransactionMethod(e.target.value)} className=' border border-blue-500 p-1 rounded focus:outline-none mt-4 mb-2'>
+                                                <select name="" id="" value={currentTransactionMethod} onChange={(e) => setCurrentTransactionMethod(e.target.value)} className=' border border-blue-500 p-1 rounded focus:outline-none'>
                                                     <option value="">Select Transaction Method</option>
                                                     {
                                                         transectionMethod.map(method => {
@@ -222,19 +221,19 @@ function EBLBankTran() {
                                                     }
                                                 </select>
                                             </div>
-                                            <div>
+                                            <div className='mt-2'>
                                                 <label htmlFor="">Ref</label>
-                                                <input type="text" placeholder='Reference' value={currentTransactionRef} onChange={(e) => setCurrentTransactionRef(e.target.value)} className='mt-5 border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                                                <input type="text" placeholder='Reference' value={currentTransactionRef} onChange={(e) => setCurrentTransactionRef(e.target.value)} className='border border-blue-500 rounded p-1 focus:outline-none w-full' />
                                             </div>
-                                            <div>
+                                            <div className='mt-2'>
                                                 <label htmlFor="">Amount</label>
-                                                <input type="text" placeholder='Amount' value={currentTransectionAmount} onChange={(e) => setCurrentTransectionAmount(e.target.value)} className='mt-5 border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                                                <input type="text" placeholder='Amount' value={currentTransectionAmount} onChange={(e) => setCurrentTransectionAmount(e.target.value)} className='border border-blue-500 rounded p-1 focus:outline-none w-full' />
                                             </div>
-                                            <div>
+                                            <div className='mt-2'>
                                                 <label htmlFor="">Limit</label>
-                                                <input type="text" placeholder='Limit' value={currentTransectionLimit} onChange={(e) => setCurrentTransectionLimit(e.target.value)} className='mt-5 border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                                                <input type="text" placeholder='Limit' value={currentTransectionLimit} onChange={(e) => setCurrentTransectionLimit(e.target.value)} className='border border-blue-500 rounded p-1 focus:outline-none w-full' />
                                             </div>
-                                            <div >
+                                            <div className='mt-2'>
                                                 <label htmlFor="" className=' block'>Dependent</label>
                                                 <select value={currentTransectionDepent} onChange={(e) => changeDependent(e.target.value, transaction)} placeholder='Dependent' name="" id="" className=' border border-blue-500 p-1 rounded focus:outline-none'>
                                                     <option value="">Selet Dependent Type</option>
@@ -243,24 +242,24 @@ function EBLBankTran() {
                                                 </select>
                                             </div>
                                             {
-                                                currentTransectionDepent === "true" &&
+                                                currentTransectionDepent &&
                                                 <div>
-                                                    <p>Depent Data</p>
+                                                    <p className=' mt-2 font-semibold'>Depent Data :</p>
                                                     <div>
-                                                        <div className=' my-5'>
+                                                        <div className=' my-2'>
                                                             <label htmlFor="">Descriptions</label>
                                                             <input type="text" value={currentTransectionDepentData.transactionName} onChange={(e) => dependantDataChange(e.target.value, "transactionName")} placeholder='Descriptions' className='border border-blue-500 rounded p-1 focus:outline-none w-full' />
                                                         </div>
-                                                        <div className=' mb-5'>
+                                                        <div className=' mb-2'>
                                                             <label htmlFor="">Ref</label>
                                                             <input type="text" value={currentTransectionDepentData.ref} onChange={(e) => dependantDataChange(e.target.value, "ref")} placeholder='Reference' className='border border-blue-500 rounded p-1 focus:outline-none w-full' />
                                                         </div>
-                                                        <div className=' mb-5'>
+                                                        <div className=' mb-2'>
                                                             <label htmlFor="">Transaction Amount</label>
                                                             <input type="text" value={currentTransectionDepentData.amount} onChange={(e) => dependantDataChange(e.target.value, "amount")} placeholder='Amount' className=' border border-blue-500 rounded p-1 focus:outline-none w-full' />
                                                         </div>
 
-                                                        <div className=' mb-5'>
+                                                        <div className=' mb-2'>
                                                             <label htmlFor="">Transaction Type</label>
                                                             <select value={currentTransectionDepentData.transactionType} onChange={(e) => dependantDataChange(e.target.value, "transactionType")} name="" id="" className=' border border-blue-500 p-1 rounded focus:outline-none'>
                                                                 <option value="">Select Transection Type</option>

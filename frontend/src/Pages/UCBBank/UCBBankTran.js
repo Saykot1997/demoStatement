@@ -27,9 +27,12 @@ function UCBBankTran() {
     const [currentTransactionType, setCurrentTransactionType] = useState('');
     const [currentTransactionCheque, setCurrentTransactionCheque] = useState('');
     const [currentTransectionName, setCurrentTransectionName] = useState('');
-    const [currentTransectionDetails, setCurrentTransectionDetails] = useState('');
     const [currentTransectionRef, setCurrentTransectionRef] = useState('');
-
+    const [currentTransectionDetails, setCurrentTransectionDetails] = useState('');
+    const [currentTransectionAmount, setCurrentTransectionAmount] = useState('');
+    const [currentTransectionLimit, setCurrentTransectionLimit] = useState(0);
+    const [currentTransectionDepent, setCurrentTransectionDepent] = useState(false);
+    const [currentTransectionDepentData, setCurrentTransectionDepentData] = useState({});
     const transectionMethod = ['cash', 'cheque', 'online', "atm"];
 
 
@@ -38,15 +41,21 @@ function UCBBankTran() {
     }
 
     const toggleUpdateMode = (transaction) => {
+
         setUpdateModeOpen(!updateModeOpen)
         setCurrentTransectionName(transaction.transactionName)
         setCurrentTransactionId(transaction._id)
         setCurrentTransactionMethod(transaction.transactionMethod)
         setCurrentTransactionType(transaction.transactionType)
-        setCurrentTransactionCheque(transaction.cheque)
         setCurrentTransectionRef(transaction.ref)
         setCurrentTransectionDetails(transaction.transactionDetails)
+        setCurrentTransactionCheque(transaction.cheque)
+        setCurrentTransectionAmount(transaction.amount)
+        setCurrentTransectionLimit(transaction.limit)
+        setCurrentTransectionDepent(transaction.dependent)
+        setCurrentTransectionDepentData(transaction.dependentData)
     }
+
 
     const getTransaction = async () => {
 
@@ -69,15 +78,23 @@ function UCBBankTran() {
     const updateTransaction = async () => {
 
         const data = {
-
             transactionName: currentTransectionName,
             transactionType: currentTransactionType,
             transactionMethod: currentTransactionMethod,
             cheque: currentTransactionCheque,
             bankName: path,
+            amount: currentTransectionAmount,
+            limit: currentTransectionLimit,
             transactionDetails: currentTransectionDetails,
-            ref: currentTransectionRef
+            ref: currentTransectionRef,
+        }
 
+        if (currentTransectionDepent === "true") {
+            data.dependent = true
+            data.dependentData = currentTransectionDepentData
+        } else {
+            data.dependent = false
+            data.dependentData = {}
         }
 
         try {
@@ -94,11 +111,7 @@ function UCBBankTran() {
 
         } catch (error) {
 
-            if (error.response.data === "Transaction name already exists") {
-
-                toast.error('Transaction name already exists')
-
-            } else if (error.response.data === "Please fill all fields") {
+            if (error.response.data === "Please fill all fields") {
 
                 toast.error('Please fill all fields')
 
@@ -107,6 +120,23 @@ function UCBBankTran() {
                 console.log(error)
                 toast.error('Something went wrong')
             }
+        }
+    }
+
+
+    const changeDependent = (value, transaction) => {
+
+        setCurrentTransectionDepent(value)
+        if (!transaction.dependentData) {
+            const data = {
+                transactionName: "",
+                transactionType: "",
+                amount: "",
+                ref: "",
+                cheque: '',
+                transactionDetails: ''
+            }
+            setCurrentTransectionDepentData(data)
         }
     }
 
@@ -135,13 +165,18 @@ function UCBBankTran() {
         }
     }
 
+    const dependantDataChange = (value, field) => {
+
+        let newObject = {
+            ...currentTransectionDepentData
+        }
+        newObject[field] = value
+        setCurrentTransectionDepentData(newObject)
+    }
+
     useEffect(() => {
-
         getTransaction()
-
     }, [path])
-
-    // console.log(Transaction)
 
 
     return (
@@ -163,23 +198,96 @@ function UCBBankTran() {
                                 {
                                     updateModeOpen && currentTransactionId === transaction._id ?
                                         <div>
-                                            <input type="text" placeholder='Naration' value={currentTransectionName} onChange={(e) => setCurrentTransectionName(e.target.value)} className='mt-5 border border-blue-500 rounded p-1 focus:outline-none w-full' />
-                                            <input type="text" placeholder='Ref.' value={currentTransectionRef} onChange={(e) => setCurrentTransectionRef(e.target.value)} className='mt-5 border border-blue-500 rounded p-1 focus:outline-none w-full' />
-                                            <input type="text" placeholder='Transaction Details' value={currentTransectionDetails} onChange={(e) => setCurrentTransectionDetails(e.target.value)} className='mt-5 border border-blue-500 rounded p-1 focus:outline-none w-full' />
-                                            <select name="" id="" value={currentTransactionMethod} onChange={(e) => setCurrentTransactionMethod(e.target.value)} className=' border border-blue-500 p-1 rounded focus:outline-none mt-4 mb-2'>
-                                                <option value="">Select Transaction Method</option>
-                                                {
-                                                    transectionMethod.map(method => {
-                                                        return <option value={method}>{method}</option>
-                                                    })
-                                                }
-                                            </select>
-                                            <select value={currentTransactionType} onChange={(e) => setCurrentTransactionType(e.target.value)} name="" id="" className=' border border-blue-500 p-1 rounded focus:outline-none mt-4 mb-2'>
-                                                <option value="">Select Transection Type</option>
-                                                <option value="credit">Credit</option>
-                                                <option value="debit">Debit</option>
-                                            </select>
-                                            <input type="text" placeholder='Cheque' value={currentTransactionCheque} onChange={(e) => setCurrentTransactionCheque(e.target.value)} className='mt-5 border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                                            <div className=' mt-2'>
+                                                <label htmlFor="">Narations</label>
+                                                <input type="text" placeholder='Narations' value={currentTransectionName} onChange={(e) => setCurrentTransectionName(e.target.value)} className='border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                                            </div>
+                                            <div className=' mt-2'>
+                                                <label htmlFor="">Cheque</label>
+                                                <input type="text" placeholder='Cheque' value={currentTransactionCheque} onChange={(e) => setCurrentTransactionCheque(e.target.value)} className=' border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                                            </div>
+                                            <div className=' mt-2'>
+                                                <label htmlFor="">Ref</label>
+                                                <input type="text" placeholder='Ref' value={currentTransectionRef} onChange={(e) => setCurrentTransectionRef(e.target.value)} className=' border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                                            </div>
+                                            <div className=' mt-2'>
+                                                <label htmlFor="">Transaction Details</label>
+                                                <input type="text" placeholder='Transaction Details' value={currentTransectionDetails} onChange={(e) => setCurrentTransectionDetails(e.target.value)} className='border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                                            </div>
+                                            <div className=' mt-2'>
+                                                <label htmlFor="">Amount</label>
+                                                <input type="text" placeholder='Amount' value={currentTransectionAmount} onChange={(e) => setCurrentTransectionAmount(e.target.value)} className='border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                                            </div>
+                                            <div className=' mt-2'>
+                                                <label htmlFor="">Limit</label>
+                                                <input type="text" placeholder='Limit' value={currentTransectionLimit} onChange={(e) => setCurrentTransectionLimit(e.target.value)} className=' border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                                            </div>
+                                            <div>
+                                                <label htmlFor="">Transaction Type</label>
+                                                <select value={currentTransactionType} onChange={(e) => setCurrentTransactionType(e.target.value)} name="" id="" className=' border border-blue-500 p-1 rounded focus:outline-none mt-4 mb-2'>
+                                                    <option value="">Select Transection Type</option>
+                                                    <option value="credit">Credit</option>
+                                                    <option value="debit">Debit</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <label htmlFor="">Transaction Mathod</label>
+                                                <select name="" id="" value={currentTransactionMethod} onChange={(e) => setCurrentTransactionMethod(e.target.value)} className=' border border-blue-500 p-1 rounded focus:outline-none mt-4 mb-2'>
+                                                    <option value="">Select Transaction Method</option>
+                                                    {
+                                                        transectionMethod.map(method => {
+                                                            return <option value={method}>{method}</option>
+                                                        })
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div >
+                                                <label htmlFor="" className=' block'>Dependent</label>
+                                                <select value={currentTransectionDepent} onChange={(e) => changeDependent(e.target.value, transaction)} placeholder='Dependent' name="" id="" className=' border border-blue-500 p-1 rounded focus:outline-none'>
+                                                    <option value="">Selet Dependent Type</option>
+                                                    <option value={true}>Yes</option>
+                                                    <option value={false}>No</option>
+                                                </select>
+                                            </div>
+
+                                            {
+                                                currentTransectionDepent &&
+
+                                                <div>
+                                                    <p className=' mt-2 font-semibold'>Depent Data :</p>
+                                                    <div>
+                                                        <div className=' my-2'>
+                                                            <label htmlFor="">Naration</label>
+                                                            <input type="text" value={currentTransectionDepentData.transactionName} onChange={(e) => dependantDataChange(e.target.value, "transactionName")} placeholder='Naration' className='border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                                                        </div>
+                                                        <div className=' mb-2'>
+                                                            <label htmlFor="">Cheque</label>
+                                                            <input type="text" value={currentTransectionDepentData.cheque} onChange={(e) => dependantDataChange(e.target.value, "cheque")} placeholder='Cheque' className='border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                                                        </div>
+                                                        <div className=' mb-2'>
+                                                            <label htmlFor="">Transaction Amount</label>
+                                                            <input type="text" value={currentTransectionDepentData.amount} onChange={(e) => dependantDataChange(e.target.value, "amount")} placeholder='Amount' className=' border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                                                        </div>
+                                                        <div className=' mb-2'>
+                                                            <label htmlFor="">Ref</label>
+                                                            <input type="text" value={currentTransectionDepentData.ref} onChange={(e) => dependantDataChange(e.target.value, "ref")} placeholder='Ref' className=' border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                                                        </div>
+                                                        <div className=' mb-2'>
+                                                            <label htmlFor="">Transaction Details</label>
+                                                            <input type="text" value={currentTransectionDepentData.transactionDetails} onChange={(e) => dependantDataChange(e.target.value, "transactionDetails")} placeholder='Transaction Details' className=' border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                                                        </div>
+
+                                                        <div className=' mb-2'>
+                                                            <label htmlFor="">Transaction Type</label>
+                                                            <select value={currentTransectionDepentData.transactionType} onChange={(e) => dependantDataChange(e.target.value, "transactionType")} name="" id="" className=' border border-blue-500 p-1 rounded focus:outline-none'>
+                                                                <option value="">Select Transection Type</option>
+                                                                <option value="credit">Credit</option>
+                                                                <option value="debit">Debit</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
                                         </div>
                                         :
                                         <div>
@@ -189,6 +297,23 @@ function UCBBankTran() {
                                             <p className=' my-2 text-sm'> <span className=' font-medium'>Transaction Method :</span> {transaction.transactionMethod}</p>
                                             <p className=' my-2 text-sm'> <span className=' font-medium'>Transaction Type :</span> {transaction.transactionType}</p>
                                             <p className=' mb-2 text-sm'> <span className=' font-medium'>Cheque : </span>{transaction.cheque}</p>
+                                            <p className=' mt-2 text-sm'> <span className=' font-medium'>Transaction Amount :</span> {transaction.amount}</p>
+                                            <p className=' mt-2 text-sm'> <span className=' font-medium'>Limit :</span> {transaction.limit}</p>
+                                            <p className=' mt-2 text-sm'> <span className=' font-medium'>Dependent :</span> {transaction.dependent ? "True" : "False"}</p>
+                                            {
+                                                transaction.dependent &&
+                                                <div className=' mt-1'>
+
+                                                    <p>Dependent Data :</p>
+                                                    <p className=' mt-2 text-sm'> <span className=' font-medium'>Natation :</span> {transaction.dependentData.transactionName}</p>
+                                                    <p className=' mt-2 text-sm'> <span className=' font-medium'>Ref :</span> {transaction.dependentData.ref}</p>
+                                                    <p className=' mt-2 text-sm'> <span className=' font-medium'>Transaction Details :</span> {transaction.dependentData.transactionDetails}</p>
+                                                    <p className=' mt-2 text-sm'> <span className=' font-medium'>Cheque :</span> {transaction.dependentData.cheque}</p>
+                                                    <p className=' mt-2 text-sm'> <span className=' font-medium'>Amount :</span> {transaction.dependentData.amount}</p>
+                                                    <p className=' mt-2 text-sm'> <span className=' font-medium'>Type :</span> {transaction.dependentData.transactionType}</p>
+
+                                                </div>
+                                            }
                                         </div>
                                 }
                                 {
