@@ -3,7 +3,6 @@ import commaNumber from 'comma-number';
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { Host } from '../../Data';
-import { TransactionAmountFatchSuccess } from '../../Redux/TransactionAmount_slice';
 import { transactionsFatchSuccess } from '../../Redux/Transactions_slice';
 import GenerateRandomTranjections from '../../Utils/GenerateRandomTransaction';
 import logo from "../../Photos/islami_bank/islami_bank_logo.png";
@@ -40,7 +39,6 @@ function IslamiBankStatement() {
     const Transactions = useSelector(state => state.Transactions.Transactions);
     const User = useSelector(state => state.User.User);
     const dispatch = useDispatch();
-    const TransactionAmount = useSelector(state => state.TransactionAmount.TransactionAmount);
 
     const getBankTransactions = async (value) => {
 
@@ -94,41 +92,14 @@ function IslamiBankStatement() {
             return alert("No Transactions Found. Please select Bank Transaction First.")
         }
 
-        if (!TransactionAmount.ATM.length > 0 || !TransactionAmount.Cheque.length > 0) {
-            return alert("No Transaction Amount Found. Please insert Transaction Amount First.")
-        }
-
-        const allData = GenerateRandomTranjections(hideStartStatementDate, hideEndStatementDate, Transactions, transactionQuantity, initialBalance, TransactionAmount.ATM, TransactionAmount.Cheque, "islami_bank");
+        const allData = GenerateRandomTranjections(hideStartStatementDate, hideEndStatementDate, Transactions, transactionQuantity, initialBalance);
         setTotalWithdrawal(allData.TotalWithdrawal);
         setTotalDeposit(allData.TotalDeposit);
         setRandomTransictions(allData.RandomTransictions);
         toggleEditMode();
     }
 
-    const printWebPage = () => {
-        window.print();
-    }
-
-    const getTransectionsAmounts = async () => {
-
-        try {
-
-            const response = await axios.get(`${Host}/api/user/transactionAmount`, {
-                headers: {
-                    Authorization: `Bearer ${User}`
-                }
-            })
-
-            dispatch(TransactionAmountFatchSuccess(response.data))
-
-        } catch (error) {
-
-            console.log(error)
-        }
-    }
-
     useEffect(() => {
-        getTransectionsAmounts()
         getBankTransactions()
     }, [])
 

@@ -16,9 +16,13 @@ function IB({ toggleAddTransactionMode }) {
     const [transactionName, setTransactionName] = useState('');
     const [transactionType, setTransactionType] = useState('');
     const [transactionMethod, setTransactionMethod] = useState('');
+    const [transactionAmount, setTransactionAmount] = useState('')
     const [cheque, setCheque] = useState('');
     const [bankName, setBankName] = useState('');
-    const transectionMethods = ['cash', 'cheque', 'online', "atm"];
+    const transectionMethod = ['cash', 'cheque', 'online', "atm"];
+    const [limit, setLimit] = useState(0)
+    const [dependent, setDependent] = useState(false)
+    const [dependentData, setDependentData] = useState({})
 
 
     const clearFields = () => {
@@ -26,11 +30,15 @@ function IB({ toggleAddTransactionMode }) {
         setTransactionType('');
         setTransactionMethod('');
         setCheque('');
+        setTransactionAmount("")
+        setLimit(0)
+        setDependent(false)
+        setDependentData({})
     }
 
     const CreateTransaction = async () => {
 
-        if (transactionName === '' || transactionType === '' || transactionMethod === '' || cheque === '' || bankName === '') {
+        if (transactionName === '' || transactionType === '' || transactionMethod === '' || bankName === '') {
 
             return toast.error('Please fill all the fields')
         }
@@ -41,7 +49,16 @@ function IB({ toggleAddTransactionMode }) {
             transactionMethod,
             cheque,
             bankName,
+            amount: transactionAmount,
+            limit: parseInt(limit),
+            dependentData
         };
+
+        if (dependent === "true") {
+            data.dependent = true
+        } else {
+            data.dependent = false
+        }
 
         try {
 
@@ -68,34 +85,111 @@ function IB({ toggleAddTransactionMode }) {
         }
     }
 
+    const dependantDataChange = (value, field) => {
+
+        let newObject = {
+            ...dependentData
+        }
+        newObject[field] = value
+        setDependentData(newObject)
+    }
+
+    const changeDependent = (value) => {
+
+        setDependent(value)
+        setDependentData({
+            transactionName: "",
+            transactionType: "",
+            amount: "",
+            cheque: "",
+        })
+    }
+
 
     useEffect(() => {
         setBankName(path)
     }, [path])
 
 
+
+
     return (
-        <div className=' w-screen h-screen absolute top-0 left-0 bg-black bg-opacity-25 p-5 z-20'>
+        <div className=' w-screen h-screen overflow-y-scroll absolute top-0 left-0 bg-black bg-opacity-25 p-5 z-20'>
             <div className=' px-10 flex justify-end'>
                 <button onClick={toggleAddTransactionMode} className=' bg-red-500 py-[6px] px-2 rounded text-white'>Close</button>
             </div>
             <div className=' flex justify-center w-full'>
                 <div className=' bg-white shadow rounded w-[350px] px-7 py-5 mt-10'>
                     <p className=' text-center font-medium'>Create Transactions</p>
-                    <input type="text" value={transactionName} onChange={(e) => setTransactionName(e.target.value)} placeholder='Particular' className='mt-5 border border-blue-500 rounded p-1 focus:outline-none w-full' />
-                    <input type="text" value={cheque} onChange={(e) => setCheque(e.target.value)} placeholder='Cheque Number' className='mt-5 border border-blue-500 rounded p-1 focus:outline-none w-full' />
-                    <select value={transactionType} onChange={(e) => setTransactionType(e.target.value)} name="" id="" className=' border border-blue-500 p-1 rounded focus:outline-none mt-4 mb-2'>
-                        <option value="">Select Transection Type</option>
-                        <option value="credit">Credit</option>
-                        <option value="debit">Debit</option>
-                    </select>
+                    <div className=' my-5'>
+                        <label htmlFor="">Particulars</label>
+                        <input type="text" value={transactionName} onChange={(e) => setTransactionName(e.target.value)} placeholder='Particulars' className='border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                    </div>
+                    <div className=' mb-5'>
+                        <label htmlFor="">Cheque</label>
+                        <input type="text" value={cheque} onChange={(e) => setCheque(e.target.value)} placeholder='Cheque' className='border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                    </div>
+                    <div className=' mb-5'>
+                        <label htmlFor="">Transaction Amount</label>
+                        <input type="text" value={transactionAmount} onChange={(e) => setTransactionAmount(e.target.value)} placeholder='Amount' className=' border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                    </div>
+                    <div className=' mb-5'>
+                        <label htmlFor="">Limit</label>
+                        <input type="number" value={limit} onChange={(e) => setLimit(e.target.value)} placeholder='Limit' className='border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                    </div>
+                    <div className=' mb-5'>
+                        <label htmlFor="">Transaction Type</label>
+                        <select value={transactionType} onChange={(e) => setTransactionType(e.target.value)} name="" id="" className=' border border-blue-500 p-1 rounded focus:outline-none'>
+                            <option value="">Select Transection Type</option>
+                            <option value="credit">Credit</option>
+                            <option value="debit">Debit</option>
+                        </select>
+                    </div>
+                    <div className=' mb-4'>
+                        <label htmlFor="">Transaction Mathod</label>
+                        <select value={transactionMethod} onChange={(e) => setTransactionMethod(e.target.value)} name="" id="" className=' border border-blue-500 p-1 rounded focus:outline-none'>
+                            <option value="">Select Transection Method</option>
+                            {transectionMethod.map((item, index) => {
+                                return <option key={index} value={item}>{item}</option>
+                            })}
+                        </select>
+                    </div>
 
-                    <select value={transactionMethod} onChange={(e) => setTransactionMethod(e.target.value)} name="" id="" className=' border border-blue-500 p-1 rounded focus:outline-none my-2'>
-                        <option value="">Select Transection Method</option>
-                        {transectionMethods.map((item, index) => {
-                            return <option key={index} value={item}>{item}</option>
-                        })}
-                    </select>
+                    <div >
+                        <label htmlFor="" className=' block'>Dependent</label>
+                        <select value={dependent} onChange={(e) => changeDependent(e.target.value)} placeholder='Dependent' name="" id="" className=' border border-blue-500 p-1 rounded focus:outline-none'>
+                            <option value="">Selet Dependent Type</option>
+                            <option value={true}>Yes</option>
+                            <option value={false}>No</option>
+                        </select>
+                    </div>
+
+                    {
+                        dependent === "true" &&
+                        <div>
+                            <div className=' my-5'>
+                                <label htmlFor="">Particulars</label>
+                                <input type="text" value={dependentData.transactionName} onChange={(e) => dependantDataChange(e.target.value, "transactionName")} placeholder='Particulars' className='border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                            </div>
+                            <div className=' mb-5'>
+                                <label htmlFor="">Cheque</label>
+                                <input type="text" value={dependentData.cheque} onChange={(e) => dependantDataChange(e.target.value, "cheque")} placeholder='Cheque' className='border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                            </div>
+                            <div className=' mb-5'>
+                                <label htmlFor="">Transaction Amount</label>
+                                <input type="text" value={dependentData.amount} onChange={(e) => dependantDataChange(e.target.value, "amount")} placeholder='Amount' className=' border border-blue-500 rounded p-1 focus:outline-none w-full' />
+                            </div>
+
+                            <div className=' mb-5'>
+                                <label htmlFor="">Transaction Type</label>
+                                <select value={dependentData.transactionType} onChange={(e) => dependantDataChange(e.target.value, "transactionType")} name="" id="" className=' border border-blue-500 p-1 rounded focus:outline-none'>
+                                    <option value="">Select Transection Type</option>
+                                    <option value="credit">Credit</option>
+                                    <option value="debit">Debit</option>
+                                </select>
+                            </div>
+                        </div>
+                    }
                     <div className='mt-5 flex justify-center'>
                         <button onClick={CreateTransaction} className='shadow shadow-blue-300 p-1 rounded text-blue-600 hover:scale-105 transition-all ease-in'>Save</button>
                     </div>

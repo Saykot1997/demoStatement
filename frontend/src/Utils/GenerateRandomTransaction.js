@@ -45,10 +45,10 @@ const GenerateRandomTranjections = (startStatementDate, endStatementDate, transa
         let chequeWithdrawalOrDepositTime = [11, 12, 13, 14, 15];
 
         let randomTransactionId = transactions[Math.floor(Math.random() * transactions.length)]._id;
-        let randomParticular = transactions[Math.floor(Math.random() * transactions.length)].transactionName;
         let randomTransictionsDate = randomTransictionsDates[i];
         let randomTransictionsTime = ""
-        let findRandomParticular = transactions.findIndex((item) => item._id === randomTransactionId);
+        let findRandomParticular = transactions.findIndex((item) => item._id.toString() === randomTransactionId.toString());
+        let randomParticular = transactions[findRandomParticular].transactionName;
         let randomTransictionsMunite = Math.floor(Math.random() * 60);
         let randomWithdrawal = "";
         let randomDeposit = "";
@@ -59,7 +59,8 @@ const GenerateRandomTranjections = (startStatementDate, endStatementDate, transa
             let alradyExistedObjectsCount = 0
 
             randomTransictions.forEach((item, index) => {
-                if (item.particular === transactions[findRandomParticular].transactionName) {
+
+                if (transactions[findRandomParticular]._id === item.objectId) {
                     alradyExistedObjectsCount = alradyExistedObjectsCount + 1
                 }
             })
@@ -107,6 +108,7 @@ const GenerateRandomTranjections = (startStatementDate, endStatementDate, transa
                     deposit: randomDeposit,
                     type: transactions[findRandomParticular].transactionType,
                     method: transactions[findRandomParticular].transactionMethod,
+                    objectId: randomTransactionId
                 }
 
                 if (transactions[findRandomParticular].branch) {
@@ -268,6 +270,7 @@ const GenerateRandomTranjections = (startStatementDate, endStatementDate, transa
                 deposit: randomDeposit,
                 type: transactions[findRandomParticular].transactionType,
                 method: transactions[findRandomParticular].transactionMethod,
+                objectId: randomTransactionId
             }
 
             // inserting fields into randomTransactionObject 
